@@ -18,10 +18,10 @@ ActiveRecord::Schema.define(version: 2018_09_30_203458) do
   create_table "order_items", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "quantity"
+    t.integer "quantity", default: 0, null: false
     t.bigint "order_id"
     t.bigint "product_id"
-    t.decimal "price"
+    t.decimal "price", precision: 15, scale: 2
     t.index ["order_id"], name: "index_order_items_on_order_id"
     t.index ["product_id"], name: "index_order_items_on_product_id"
   end
@@ -30,16 +30,16 @@ ActiveRecord::Schema.define(version: 2018_09_30_203458) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "token"
-    t.decimal "totalPrice"
+    t.decimal "totalPrice", precision: 15, scale: 2
   end
 
   create_table "products", force: :cascade do |t|
-    t.string "title"
+    t.string "title", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "quantity"
-    t.boolean "isBlueray"
-    t.decimal "price"
+    t.boolean "isBlueray", null: false
+    t.decimal "price", precision: 15, scale: 2
   end
 
   add_foreign_key "order_items", "orders"

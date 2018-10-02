@@ -1,59 +1,60 @@
-<h2>Shopping Cart</h2>
+  <h1>Shopping Cart</h1>
 
-<%= button_to "Back to Shop", '/', method: :get %>
-
-<table>
-  <thread>
-    <tr>
-      <td>Product</td>
-      <td>Item Price</td>
-      <td>Total Cost</td>
-      <td>Quantity</td>
-      <td></td>
-      <td></td>
-    </tr>
-  </thread>
-  <tbody>
-    <% @items.each do |item| %>
+  <table class="table table-striped">
+    <thread class="thead-dark">
       <tr>
-        <td><%= item.product.title %></td>
-        <td align="center"><%= number_to_currency(item.price, :unit => "$") %></td>
-        <td align="center"><%= number_to_currency(item.price * item.quantity, :unit => "$") %></td>
-        <td align="center"><%= item.quantity %></td>
+        <th scope="col">Product</th>
+        <th scope="col">Price</th>
+        <th scope="col">Subtotal</th>
+        <th scope="col">Quantity</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thread>
+    <tbody>
+      <% @items.each do |item| %>
+        <tr>
+          <td><%= item.product.title %></td>
+          <td><%= number_to_currency(item.price, :unit => "$") %></td>
+          <td><%= number_to_currency(item.price * item.quantity, :unit => "$") %></td>
+          <td><%= item.quantity %></td>
+          <td>
+            <%= form_for item, method: :delete do |f| %>
+              <%= button_tag(type: "submit", class: "btn btn-danger") do %>
+                Remove <i class="icon-repeat"></i>
+              <% end %>
+            <% end %>
+          </td>
+          <td>
+            <% if item.product.isBlueray && current_cart.all_blueray?%>
+              15% discount for purchasing all Blu-Ray items! Saved a total of <%= number_to_currency(item.quantity * (item.product.price - item.price), :unit => "$") %>
+            <% end %>
+            <% if !item.product.isBlueray && current_cart.all_dvd?%>
+              10% discount for purchasing all DVD items! Saved a total of <%= number_to_currency(item.quantity * (item.product.price - item.price), :unit => "$") %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+      <tr>
+        <td>Total</td>
+        <td></td>
         <td>
-          <%= form_for item, method: :delete do |f| %>
-            <%= f.submit "Remove" %>
+          <% if (current_cart.items_count > 99)%>
+            <%= number_to_currency(current_cart.totalPrice * 0.95, :unit => "$") %>
+          <% else %>
+            <%= number_to_currency(current_cart.totalPrice, :unit => "$") %>
           <% end %>
         </td>
         <td>
-          <% if item.product.isBlueray && current_cart.all_blueray?%>
-            15% Discount for purchasing all Blu-Ray items! Saved a total of <%= number_to_currency(item.quantity * (item.product.price - item.price), :unit => "$") %>
-          <% end %>
-          <% if !item.product.isBlueray && current_cart.all_dvd?%>
-            10% Discount for purchasing all DVD items! Saved a total of <%= number_to_currency(item.quantity * (item.product.price - item.price), :unit => "$") %>
+          <%= current_cart.items_count %>
+        </td>
+        <td></td>
+        <td>
+          <% if (current_cart.items_count > 99)%>
+            5% discount for purchasing 100 or more items! Saved a total of <%= number_to_currency(current_cart.totalPrice * 0.05, :unit => "$") %>
           <% end %>
         </td>
       </tr>
-    <% end %>
-    <tr>
-      <td>Total</td>
-      <td></td>
-      <td align="center">
-        <% if (current_cart.items_count > 99)%>
-          <%= number_to_currency(current_cart.totalPrice * 0.95, :unit => "$") %>
-        <% else %>
-          <%= number_to_currency(current_cart.totalPrice, :unit => "$") %>
-        <% end %>
-      </td>
-      <td align="center">
-        <%= current_cart.items_count %>
-      </td>
-      <td></td>
-      <td>
-        <% if (current_cart.items_count > 99)%>
-          5% Discount for purchasing 100 or more items! Saved a total of <%= number_to_currency(current_cart.totalPrice * 0.05, :unit => "$") %>
-        <% end %>
-      </td>
-    </tr>
-  </tbody>
-</table>
+    </tbody>
+  </table>
+  <%= button_to "Back to Shop", '/', method: :get, class: "btn btn-primary" %>

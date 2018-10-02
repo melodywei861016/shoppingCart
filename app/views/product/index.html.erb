@@ -1,14 +1,15 @@
-<h2>The Pirate Shop</h2>
-
-<ol>
+<h1>The Pirate Shop</h1>
+<ol class="list-group active">
   <% @products.each do |product| %>
-    <li>
-      <%= product.title %> ($<%= product.price %>)
+    <li  class="list-group-item d-flex justify-content-between align-items-center">
+          <%= product.title %> <span class="badge badge-pill badge-primary"><%= number_to_currency(product.price, :unit => "$") %></span>
 
       <%= form_tag order_items_path do %>
         <%= hidden_field_tag :product_id, product.id %>
         <%= number_field_tag :quantity, 1 %>
-        <%= submit_tag "Add to Cart" %>
+        <%= button_tag(type: "submit", class: "btn btn-primary") do %>
+          Add to Cart <i class="icon-repeat"></i>
+        <% end %>
       <% end %>
 
     </li>

@@ -27,14 +27,16 @@ class ShopCart
           item.save
         end
       end
-    elsif all_dvd?
+    end
+    if all_dvd?
       order.items.each do |item|
         if !Product.find(item.product_id).isBlueray
           item.price = Product.find(item.product_id).price * 0.90
           item.save
         end
       end
-    else
+    end
+    if (!all_blueray? && product.isBlueray) || (!all_dvd? && !product.isBlueray)
       order_item.price = product.price
     end
     order_item.quantity = quantity
