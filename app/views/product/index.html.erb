@@ -1,18 +1,20 @@
-<h1>The Pirate Shop</h1>
-<ol class="list-group active">
-  <% @products.each do |product| %>
-    <li  class="list-group-item d-flex justify-content-between align-items-center">
-          <%= product.title %> <span class="badge badge-pill badge-primary"><%= number_to_currency(product.price, :unit => "$") %></span>
+<div class = "page-header" style="margin-left:50px"><h1>The Pirate Shop</h1></div>
+<div class="container">
+  <ol class="list-group active">
+    <% @products.each do |product| %>
+      <li  class="list-group-item d-flex justify-content-between align-items-center">
+            <%= product.title %> <span class="badge badge-pill badge-primary"><%= number_to_currency(product.price, :unit => "$") %></span>
 
-      <%= form_tag order_items_path do %>
-        <%= hidden_field_tag :product_id, product.id %>
-        <%= number_field_tag :quantity, 1 %>
-        <%= button_tag(type: "submit", class: "btn btn-primary") do %>
-          Add to Cart <i class="icon-repeat"></i>
+        <%= form_tag order_items_path do %>
+          <%= hidden_field_tag :product_id, product.id %>
+          <%= number_field_tag :quantity, 1 %>
+          <%= button_tag(type: "submit", class: "btn btn-primary") do %>
+            Add to Cart <i class="icon-repeat"></i>
+          <% end %>
         <% end %>
-      <% end %>
 
-    </li>
+      </li>
 
-  <% end %>
-</ol>
+    <% end %>
+  </ol>
+</div>
